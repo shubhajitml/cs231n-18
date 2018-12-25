@@ -1,5 +1,5 @@
-# CS231n [Spring '17]
-my solutions for the assignment in **CS231n:  "Convolutional Neural Networks for Visual Recognition"** [Spring2017](http://cs231n.stanford.edu/2017/), one of the best courses on Deep Learning.
+# CS231n: "Convolutional Neural Networks for Visual Recognition"
+my solutions for the assignment in **CS231n** [Spring2017](http://cs231n.stanford.edu/2017/), one of the best courses on Deep Learning.
 
 Definitely, 
 
