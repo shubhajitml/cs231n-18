@@ -105,6 +105,3 @@ venv.bak/
 
 # mypy
 .mypy_cache/
-
-# working dir
-Solutions/*
