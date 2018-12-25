@@ -10,7 +10,7 @@ Definitely,
 
 **Assignments**
 
-There are 3 big and tough assignments in this course.
+There are 3 big and tough [assignments](http://cs231n.stanford.edu/2017/syllabus) in this course.
 
 **Projects**
 
