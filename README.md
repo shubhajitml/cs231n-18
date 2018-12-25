@@ -6,11 +6,14 @@ Definitely,
 **Home links**
 - The [course](http://cs231n.stanford.edu/)  
 - Video-lectures, [youtube channel](https://goo.gl/pcj7c8). Prerequisites are given in the 1st lecture  
-- [Syllabus](http://cs231n.stanford.edu/syllabus.html) with assignments
+- [Syllabus with assignments](http://cs231n.stanford.edu/2017/syllabus) 
 
 **Assignments**
 
 There are 3 big and tough [assignments](http://cs231n.stanford.edu/2017/syllabus) in this course.
+- [Assignment-1](http://cs231n.github.io/assignments2017/assignment1/)
+- [Assignment-2](http://cs231n.github.io/assignments2017/assignment2/)
+- [Assignment-3](http://cs231n.github.io/assignments2017/assignment3/)
 
 **Projects**
 
