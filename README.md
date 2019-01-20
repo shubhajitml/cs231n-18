@@ -22,7 +22,7 @@ Original course projects [projects](http://cs231n.stanford.edu/project.html)
 
 
 - 09.01.19 – 15.01.19. [Lecture 1](https://www.youtube.com/watch?v=vT1JzLTH4G4&list=PL3FW7Lu3i5JvHM8ljYj-zLfQRF3EO8sYv) and [Lecture 2](https://www.youtube.com/watch?v=OoUX-nOEjG0&list=PL3FW7Lu3i5JvHM8ljYj-zLfQRF3EO8sYv&index=2), [Assignment 1](http://cs231n.github.io/assignments2018/assignment1/) announced
-- 16.01.19 – 22.01.19. [Lecture 3](https://www.youtube.com/watch?v=h7iBpEHGVNc&list=PL3FW7Lu3i5JvHM8ljYj-zLfQRF3EO8sYv&index=3) and [Lecture 4](https://www.youtube.com/watch?v=h7iBpEHGVNc&list=PL3FW7Lu3i5JvHM8ljYj-zLfQRF3EO8sYv&index=4)
+- 16.01.19 – 22.01.19. [Lecture 3](https://www.youtube.com/watch?v=h7iBpEHGVNc&list=PL3FW7Lu3i5JvHM8ljYj-zLfQRF3EO8sYv&index=3) and [Lecture 4](https://www.youtube.com/watch?v=d14TUNcbn1k&list=PL3FW7Lu3i5JvHM8ljYj-zLfQRF3EO8sYv&index=4)
 - 23.01.19 – 29.01.19. [Lecture 5](https://www.youtube.com/watch?v=bNb2fEVKeEo&list=PL3FW7Lu3i5JvHM8ljYj-zLfQRF3EO8sYv&index=5) and [Lecture 6](https://www.youtube.com/watch?v=wEoyxE0GP2M&index=6&list=PL3FW7Lu3i5JvHM8ljYj-zLfQRF3EO8sYv)
 - 30.01.19 – **[A1 due](https://www.dropbox.com/request/t7BEfsBO6FsVrVgs7dGf)**
 - 30.01.19 – 05.02.19. [Lecture 7](https://www.youtube.com/watch?v=_JB0AO7QxSA&index=7&list=PL3FW7Lu3i5JvHM8ljYj-zLfQRF3EO8sYv) and [Lecture 8](https://www.youtube.com/watch?v=6SlgtELqOWc&index=8&list=PL3FW7Lu3i5JvHM8ljYj-zLfQRF3EO8sYv), [Assignment 2](http://cs231n.github.io/assignments2018/assignment2/) announced
