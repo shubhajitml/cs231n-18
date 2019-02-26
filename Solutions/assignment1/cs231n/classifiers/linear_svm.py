@@ -84,8 +84,20 @@ def svm_loss_vectorized(W, X, y, reg):
     num_train = X.shape[0]
     
     scores = X.dot(W)
-    correct_class_score = scores
+    correct_class_score = np.choose(y, scores.T) # np.choose uses y to select elements from scores.T
+    margin = scores.T - correct_class_score + 1
+    margin[y, np.arange(num_train)] = 0 # accounting for the j=y_i term we shouldn't count (subtracting 1 makes up for it since w_j = w_{y_j} in this case)
     
+    thresh = np.maximum(np.zeros((num_classes, num_train)), margin)
+    
+    # loss 
+    loss = np.sum(thresh)
+    loss /= num_train
+    
+    # add regularization
+    loss += reg * np.sum(W * W)
+    
+#     import pdb;pdb.set_trace()
     #############################################################################
     #                             END OF YOUR CODE                              #
     #############################################################################
