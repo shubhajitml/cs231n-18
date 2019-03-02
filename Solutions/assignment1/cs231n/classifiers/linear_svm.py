@@ -97,7 +97,6 @@ def svm_loss_vectorized(W, X, y, reg):
     # add regularization
     loss += reg * np.sum(W * W)
     
-#     import pdb;pdb.set_trace()
     #############################################################################
     #                             END OF YOUR CODE                              #
     #############################################################################
@@ -113,7 +112,23 @@ def svm_loss_vectorized(W, X, y, reg):
     # loss.                                                                     #
     #############################################################################
     # Binarize into integers
+    binary = thresh
+    binary[thresh > 0] = 1
+
+    # Perform the two operations simultaneously
+    # (1) for all j: dW[j,:] = sum_{i, j produces positive margin with i} X[:,i]
+    # (2) for all i: dW[y[i],:] = sum_{j != y_i, j produces positive margin with i} -X[:,i]
+    col_sum = np.sum(binary, axis=0)
+    binary[y, range(num_train)] = -col_sum[range(num_train)]
+    dW = np.dot(X.T, binary.T)
     
+    # Divide
+    dW /= num_train
+
+    # Regularize
+    dW += 2*reg*W
+    
+#     import pdb;pdb.set_trace()
     
     #############################################################################
     #                             END OF YOUR CODE                              #
