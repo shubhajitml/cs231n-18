@@ -107,7 +107,7 @@ def softmax_loss_vectorized(W, X, y, reg):
     # Total Loss: 1/N * sum(L_i)
     # Compute vector of stacked correct f-scores: [f(x_1)_{y_1}, ..., f(x_N)_{y_N}] (where N = num_train)
     f_correct = f[range(num_train),y]
-    loss = -np.mean(np.log(f_correct / np.sum(np.exp(f))))
+    loss = -np.mean(np.log(np.exp(f_correct) / np.sum(np.exp(f))))
     
     # Compute gradient: dw_j = 1/num_train * \sum_i[x_i * (p(y_i = j)-Ind{y_i = j} )]
     p = np.exp(f)/np.sum(np.exp(f), axis=0)
