@@ -97,38 +97,37 @@ def softmax_loss_vectorized(W, X, y, reg):
     num_train = X.shape[0]
     
     # Compute scores
-    f = np.dot(X,W)
+    scr = np.dot(X,W) # size f => (N,C)
     
     # Normalization trick to avoid numerical instability, per http://cs231n.github.io/linear-classify/#softmax
-    log_c = np.max(X)
-    f -= log_c
+    shift_scr = scr - np.max(scr, axis=1)[..., np.newaxis]
     
-    # Loss: L_i = - f(x_i)_{y_i} + log \sum_j e^{f(x_i)_j}
-    # Total Loss: 1/N * sum(L_i)
-    # Compute vector of stacked correct f-scores: [f(x_1)_{y_1}, ..., f(x_N)_{y_N}] (where N = num_train)
-    f_correct = f[range(num_train),y]
-    loss = -np.mean(np.log(f_correct / np.sum(np.exp(f))))
-    
-    # Compute gradient: dw_j = 1/num_train * \sum_i[x_i * (p(y_i = j)-Ind{y_i = j} )]
-    p = np.exp(f)/np.sum(np.exp(f), axis=0)
-    ind = np.zeros(p.shape)
-    ind[range(num_train), y] = 1
-    dW = np.dot(X.T, (p-ind))
-    dW /= num_train
+    # Calculate softmax scores
+    sftmx_scr = np.exp(shift_scr) / np.sum(np.exp(shift_scr), axis=1)[..., np.newaxis]    
 #     import pdb;pdb.set_trace()
 
-    
-    
-    # Add regularization 
-    loss += reg*np.sum(W*W)
+    # Calculate dScore, the gradient wrt. softmax scores.
+    dScore = sftmx_scr
+    dScore[range(num_train),y] = dScore[range(num_train),y] - 1
+
+    # Backprop dScore to calculate dW, then average and add regularisation.
+    dW = np.dot(X.T, dScore)
+    dW /= num_train
     dW += 2*reg*W
 
-    
+#     import pdb;pdb.set_trace()
 
+    # Calculate our cross entropy Loss.
+    correct_class_scores = np.choose(y, shift_scr.T)  # Size N vector
+    loss = np.sum(-correct_class_scores + np.log(np.sum(np.exp(shift_scr), axis=1)))
     
+    # average loss and add regularization 
+    loss /= num_train
+    loss += reg*np.sum(W*W)
+
     #############################################################################
     #                          END OF YOUR CODE                                 #
     #############################################################################
-
+    
     return loss, dW
 
