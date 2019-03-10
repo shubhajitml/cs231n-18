@@ -75,7 +75,16 @@ class TwoLayerNet(object):
     # Store the result in the scores variable, which should be an array of      #
     # shape (N, C).                                                             #
     #############################################################################
-    pass
+    # fc1 layer (N, H)
+    fc1_activation = X.dot(W1) + b1
+    
+    # relu layer (N, H)
+    relu1_activation = fc1_activation 
+    relu1_activation[relu1_activation < 0] = 0
+    
+    # fc2 layer (N, C)
+    fc2_activation = relu1_activation.dot(W2) + b2
+    scores = fc2_activation
     #############################################################################
     #                              END OF YOUR CODE                             #
     #############################################################################
@@ -92,7 +101,19 @@ class TwoLayerNet(object):
     # in the variable loss, which should be a scalar. Use the Softmax           #
     # classifier loss.                                                          #
     #############################################################################
-    pass
+    # Normalization trick to avoid numerical instability, per http://cs231n.github.io/linear-classify/#softmax
+    shift_scr = scores - np.max(scores, axis=1)[..., np.newaxis]
+    
+    # Calculate softmax scores
+    sftmx_scr = np.exp(shift_scr) / np.sum(np.exp(shift_scr), axis=1)[..., np.newaxis]  
+    
+    # Calculate our cross entropy Loss.
+    correct_class_scores = np.choose(y, shift_scr.T)  # Size N vector
+    loss = np.sum(-correct_class_scores + np.log(np.sum(np.exp(shift_scr), axis=1)))
+    
+    # add regularization
+    loss /= N
+    loss += reg * (np.sum(W1*W1) + np.sum(b1*b1) + np.sum(W2*W2) + np.sum(b2*b2))
     #############################################################################
     #                              END OF YOUR CODE                             #
     #############################################################################
