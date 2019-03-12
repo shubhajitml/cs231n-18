@@ -101,19 +101,22 @@ class TwoLayerNet(object):
     # in the variable loss, which should be a scalar. Use the Softmax           #
     # classifier loss.                                                          #
     #############################################################################
-    # Normalization trick to avoid numerical instability, per http://cs231n.github.io/linear-classify/#softmax
-    shift_scr = scores - np.max(scores, axis=1)[..., np.newaxis]
-    
-    # Calculate softmax scores
-    sftmx_scr = np.exp(shift_scr) / np.sum(np.exp(shift_scr), axis=1)[..., np.newaxis]  
-    
+    # Stability fix for softmax scores
+    shift_scores = scores - np.max(scores, axis=1)[:, np.newaxis]
+
+    # Calculate softmax scores.
+    softmax_scores = np.exp(shift_scores) / np.sum(np.exp(shift_scores), axis=1)[:, np.newaxis]
+
     # Calculate our cross entropy Loss.
-    correct_class_scores = np.choose(y, shift_scr.T)  # Size N vector
-    loss = np.sum(-correct_class_scores + np.log(np.sum(np.exp(shift_scr), axis=1)))
-    
-    # add regularization
+    correct_class_scores = np.choose(y, shift_scores.T) # Size N vector
+    loss = -correct_class_scores + np.log(np.sum(np.exp(shift_scores), axis=1))
+#     import pdb;pdb.set_trace()
+    loss = np.sum(loss)
+
+    # Average the loss & add the regularisation loss: lambda*sum(weights.^2).
     loss /= N
-    loss += reg * (np.sum(W1*W1) + np.sum(b1*b1) + np.sum(W2*W2) + np.sum(b2*b2))
+    loss += reg * (np.sum(W1*W1) + np.sum(W2*W2) + np.sum(b1*b1) + np.sum(b2*b2))
+    
     #############################################################################
     #                              END OF YOUR CODE                             #
     #############################################################################
@@ -125,7 +128,8 @@ class TwoLayerNet(object):
     # and biases. Store the results in the grads dictionary. For example,       #
     # grads['W1'] should store the gradient on W1, and be a matrix of same size #
     #############################################################################
-    pass
+    
+    
     #############################################################################
     #                              END OF YOUR CODE                             #
     #############################################################################
