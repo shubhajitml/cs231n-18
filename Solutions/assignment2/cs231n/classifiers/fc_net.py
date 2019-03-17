@@ -80,17 +80,22 @@ class TwoLayerNet(object):
         # TODO: Implement the forward pass for the two-layer net, computing the    #
         # class scores for X and storing them in the scores variable.              #
         ############################################################################
-        N, D = X.shape
-        # fc1 layer (N, H)
-        fc1_activation = X.dot(self.params['W1']) + self.params['b1']
-
-        # relu layer (N, H)
-        relu1_activation = fc1_activation 
-        relu1_activation[relu1_activation < 0] = 0
-
-        # fc2 layer (N, C)
-        fc2_activation = relu1_activation.dot(self.params['W2']) + self.params['b2']
-        scores = fc2_activation
+        batch_size = X.shape[0]
+        
+        # reshape X into vector
+        X_flatten = X.reshape(batch_size, -1)
+        
+        # FC1
+        fc1_act, fc1_cache = affine_forward(X_flatten, self.params['W1'], self.params['b1'])
+        
+        # ReLU1 
+        relu1_act, relu1_cache = relu_forward(fc1_act)
+        
+        # FC2 
+        fc2_act, fc2_cache = affine_forward(relu1_act, self.params['W2'], self.params['b2'])
+        
+        scores = np.copy(fc2_act)
+        
         ############################################################################
         #                             END OF YOUR CODE                             #
         ############################################################################
@@ -111,45 +116,17 @@ class TwoLayerNet(object):
         # of 0.5 to simplify the expression for the gradient.                      #
         ############################################################################
         
-        # Stability fix for softmax scores
-        shift_scores = scores - np.max(scores, axis=1)[:, np.newaxis]
-
-        # Calculate softmax scores.
-        softmax_scores = np.exp(shift_scores) / np.sum(np.exp(shift_scores), axis=1)[:, np.newaxis]
-
-        # Calculate our cross entropy Loss.
-        correct_class_scores = np.choose(y, shift_scores.T) # Size N vector
-        loss = -correct_class_scores + np.log(np.sum(np.exp(shift_scores), axis=1))
-        #     import pdb;pdb.set_trace()
-        loss = np.sum(loss)
-
-        # Average the loss & add the regularisation loss: lambda*sum(weights.^2).
-        loss /= N
-        loss += self.reg * (np.sum(self.params['W1']*self.params['W1']) + np.sum(self.params['W2']*self.params['W2']) + np.sum(self.params['b1']*self.params['b1']) + np.sum(self.params['b2']*self.params['b2']))
+        loss, dsoft = softmax_loss(scores, y)
         
-        dSoft = softmax_scores
-        dSoft[range(N), y] = dSoft[range(N), y] - 1
-        dSoft /= N # Average over batch.
-
-        # Backprop dScore to calculate dW2 and add regularisation derivative.
-        dW2 = np.dot(relu1_activation.T, dSoft)
-        dW2 += 2*self.reg*self.params['W2']
-        grads['W2'] = dW2
-
-        # Backprop dScore to calculate db2.
-        db2 = dSoft*1
-        grads['b2'] = np.sum(db2, axis=0)
-        # Calculate dx2 and backprop to calculate dRelu1.
-        dx2 = np.dot(dSoft, self.params['W2'].T)
-        dx2[relu1_activation <= 0] = 0
-
-        dW1 = np.dot(X.T, dx2)
-        dW1 += 2*self.reg*self.params['W1']
-        grads['W1'] = dW1
-
-        db1 = dx2*1
-        grads['b1'] = np.sum(db1, axis=0)
-
+        loss += 0.5*self.reg*(np.sum(np.square(self.params['W1'])) + np.sum(np.square(self.params['W2'])))
+        
+        dx2, dw2, db2 = affine_backward(dsoft, fc2_cache)
+        drelu = relu_backward(dx2, relu1_cache)
+        dx1, dw1, db1 = affine_backward(drelu, fc1_cache)
+        
+        grads['W2'], grads['b2'] = dw2 + self.reg*self.params['W2'], db2
+        grads['W1'], grads['b1'] = dw1 + self.reg*self.params['W1'], db1
+        
         ############################################################################
         #                             END OF YOUR CODE                             #
         ############################################################################
